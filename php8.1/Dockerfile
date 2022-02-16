@@ -19,8 +19,6 @@ ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/do
 RUN chmod uga+x /usr/local/bin/install-php-extensions && sync && \
     install-php-extensions apcu intl opcache pdo pdo_pgsql zip sockets mbstring iconv gd
 
-RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/ --allow-untrusted gnu-libiconv
-
 ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
@@ -38,10 +36,10 @@ RUN if [ ! -z "${HOST_UID}" ]; then \
 
 ENV WWW_DATA_UID ${HOST_UID}
 
-ARG APP_ENV
+ARG APP_ENV=prod
 ENV APP_ENV ${APP_ENV}
 
-RUN if [ "$APP_ENV" = "prod" ] ; then ln -s $PHP_INI_DIR/php.ini-production $PHP_INI_DIR/php.ini ; else ln -s $PHP_INI_DIR/php.ini-development $PHP_INI_DIR/php.ini ; fi
+RUN ln -s $PHP_INI_DIR/php.ini-production $PHP_INI_DIR/php.ini;
 
-COPY ./symfony.${APP_ENV}.ini $PHP_INI_DIR/conf.d/
+COPY ./symfony.${APP_ENV}.ini $PHP_INI_DIR/conf.d/symfony.ini
 COPY ./symfony.pool.conf /usr/local/etc/php-fpm.d/
