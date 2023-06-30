@@ -1,4 +1,4 @@
-ARG PHP_VERSION=8.1
+ARG PHP_VERSION=8.2
 
 FROM php:${PHP_VERSION}-fpm-alpine
 
@@ -12,7 +12,7 @@ RUN apk add --no-cache \
     libzip-dev \
     postgresql-dev \
     zip \
-;
+    ;
 
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
@@ -29,9 +29,9 @@ ENV COMPOSER_MEMORY_LIMIT -1
 ARG HOST_UID
 
 RUN if [ ! -z "${HOST_UID}" ]; then \
-        deluser www-data \
-        && addgroup www-data \
-        && adduser -u "${HOST_UID}" -G www-data -H -s /bin/sh -D www-data; \
+    deluser www-data \
+    && addgroup www-data \
+    && adduser -u "${HOST_UID}" -G www-data -H -s /bin/sh -D www-data; \
     fi
 
 ENV WWW_DATA_UID ${HOST_UID}
