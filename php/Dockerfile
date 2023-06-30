@@ -24,11 +24,11 @@ COPY --chown=nobody:nobody php/docker-entrypoint.sh /usr/local/bin/docker-entryp
 #> Start setup the php conf for the prod env <#
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 COPY php/symfony.prod.ini $PHP_INI_DIR/conf.d/app.ini
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 COPY php/docker-entrypoint.sh /usr/local/etc/entry.sh
 
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 ################
 ### PHP FOR DEV
