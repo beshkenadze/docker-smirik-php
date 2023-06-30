@@ -24,8 +24,6 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push
-        env:
-          DOCKER_BUILDKIT: 0
         uses: docker/build-push-action@v4
         with:
           context: ./php
@@ -33,12 +31,9 @@ jobs:
           tags: smirik/smirik-php:8.2
           target: core_php
       - name: Build and push (DEV)
-        env:
-          DOCKER_BUILDKIT: 0
         uses: docker/build-push-action@v4
         with:
           context: ./php
-          file: ./php/Dockerfile
           push: true
           target: core_php_dev
           tags: smirik/smirik-php-dev:8.2
