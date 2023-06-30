@@ -1,8 +1,0 @@
-ARG PHP_VERSION=8.2
-ARG APP_ENV=dev
-FROM smirik/smirik-php:${PHP_VERSION}
-
-RUN rm $PHP_INI_DIR/php.ini
-
-RUN ln -s $PHP_INI_DIR/php.ini-development $PHP_INI_DIR/php.ini
-COPY ./symfony.${APP_ENV}.ini $PHP_INI_DIR/conf.d/
