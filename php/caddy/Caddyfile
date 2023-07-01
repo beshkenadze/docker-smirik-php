@@ -1,0 +1,33 @@
+{
+	{$DEBUG}
+	#HTTP/3 support
+	# servers {
+	# 	protocol {
+	# 		experimental_http3
+	# 	}
+	# }
+	auto_https off
+}
+
+http://:8080
+
+log
+
+route {
+	root * /srv/app/public
+
+	# Add links to the API docs and to the Mercure Hub if not set explicitly (e.g. the PWA)
+	header ?Link `</docs.jsonld>; rel="http://www.w3.org/ns/hydra/core#apiDocumentation", </.well-known/mercure>; rel="mercure"`
+	# Disable Google FLOC tracking if not enabled explicitly: https://plausible.io/blog/google-floc
+	header ?Permissions-Policy "interest-cohort=()"
+
+	php_fastcgi unix//var/run/php/php-fpm.sock {
+		# trusted_proxies 127.0.0.0/8 10.0.0.0/24 172.16.0.0/12 192.168.0.0/16
+		# header_up X-Forwarded-Proto "https"
+		# header_up X-Forwarded-Port "443"
+		# header_up X-Forwarded-For "127.0.0.1"
+	}
+
+	encode zstd gzip
+	file_server
+}
