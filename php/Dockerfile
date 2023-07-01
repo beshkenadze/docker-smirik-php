@@ -5,7 +5,7 @@ FROM php:${PHP_VERSION}-fpm-alpine AS core_php
 
 RUN set -eux; \
     apk upgrade --update --no-cache --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community caddy; \
-    apk add --update --no-cache libxslt-dev caddy zip gnu-libiconv git gettext file acl; \
+    apk add --update --no-cache libxslt-dev caddy zip gnu-libiconv git gettext file acl su-exec supervisor fcgi; \
     apk add --update --no-cache --virtual .php-deps postgresql-dev libzip-dev icu-dev; \
     # docker-php-ext-install -j$(nproc) pdo_pgsql xsl; \
     apk add --update --no-cache --virtual .php-rundeps libxslt so:libpq.so.5; \
