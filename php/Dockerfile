@@ -11,13 +11,10 @@ RUN set -eux; \
     apk add --update --no-cache --virtual .php-rundeps libxslt so:libpq.so.5; \
     apk del .php-deps
 
-RUN set -eux; \
-    docker-php-ext-install apcu intl opcache pdo pdo_pgsql zip sockets mbstring iconv gd xsl;
+ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
-# ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
-
-# RUN chmod uga+x /usr/local/bin/install-php-extensions && sync && \
-#     install-php-extensions apcu intl opcache pdo pdo_pgsql zip sockets mbstring iconv gd xsl
+RUN chmod uga+x /usr/local/bin/install-php-extensions && sync && \
+    install-php-extensions apcu intl opcache pdo pdo_pgsql zip sockets mbstring iconv gd xsl
 
 ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
 
