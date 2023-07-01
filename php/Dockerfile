@@ -29,7 +29,8 @@ RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 #> Start setup the php conf for the prod env <#
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
-COPY php/symfony.prod.ini $PHP_INI_DIR/conf.d/app.ini
+# COPY php/symfony.prod.ini $PHP_INI_DIR/conf.d/app.ini
+RUN mv "php/symfony.prod.ini" "$PHP_INI_DIR/conf.d/app.ini"
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
